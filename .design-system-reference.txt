@@ -1,0 +1,189 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   VNC SOAR DASHBOARD - DESIGN SYSTEM                         ║
+║                         QUICK REFERENCE GUIDE                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📖 FULL DOCUMENTATION: See DESIGN_SYSTEM.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 COLOR CODING FOR ACTIONS (CRITICAL - ALWAYS FOLLOW)
+─────────────────────────────────────────────────────────────────────────────
+🟣 Purple → View/Read actions (FiEye)
+🟠 Orange → Warning/Investigation (FiAlertTriangle, FiShield)
+🔴 Red    → Destructive actions (FiTrash2, FiX, Terminate)
+🟢 Green  → Positive actions (FiCheckCircle, Resolve, Enable)
+⚫ Gray   → Neutral actions (FiXCircle, Dismiss)
+🔵 Blue   → Info actions (FiInfo)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔘 ICON BUTTON PATTERN (MANDATORY FOR ALL TABLE ACTIONS)
+─────────────────────────────────────────────────────────────────────────────
+<button 
+  className="w-10 h-10 flex items-center justify-center rounded-lg 
+             bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 
+             transition-all group relative"
+  onClick={handleAction}
+  title="Action Name"
+>
+  <FiIcon className="text-lg" />
+  <span className="absolute bottom-full mb-2 hidden group-hover:block 
+                   bg-[#1a1b35] text-white text-xs py-1 px-2 rounded 
+                   whitespace-nowrap z-10">
+    Action Name
+  </span>
+</button>
+
+Specifications:
+• Size: Fixed 40×40px (w-10 h-10)
+• Icon Size: text-lg (18px)
+• Background: Semi-transparent color with /20 opacity
+• Hover: Increase to /30 opacity
+• Always include tooltip with action description
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎭 MODAL USAGE (ALL DESTRUCTIVE ACTIONS REQUIRE CONFIRMATION)
+─────────────────────────────────────────────────────────────────────────────
+<ConfirmModal
+  isOpen={showModal}
+  onClose={() => setShowModal(false)}
+  onConfirm={handleConfirm}
+  title="Confirm Action"
+  message="Are you sure?"
+  type="danger"  // warning | danger | info | success
+  confirmText="Confirm"
+  cancelText="Cancel"
+/>
+
+<SuccessModal
+  isOpen={showSuccess}
+  onClose={() => setShowSuccess(false)}
+  title="Success"
+  message="Operation completed successfully"
+/>
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 GRADIENT SYSTEM (USE DIFFERENT GRADIENTS FOR VISUAL DISTINCTION)
+─────────────────────────────────────────────────────────────────────────────
+<MetricCard gradient="purple" /> ← First card
+<MetricCard gradient="blue" />   ← Second card
+<MetricCard gradient="teal" />   ← Third card
+<MetricCard gradient="pink" />   ← Fourth card
+<MetricCard gradient="orange" /> ← Fifth card
+
+Available: purple, blue, teal, pink, orange, default
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 CRITICAL RULES (NEVER BREAK THESE)
+─────────────────────────────────────────────────────────────────────────────
+✅ ALWAYS use icon-only buttons in table action columns
+✅ ALWAYS include hover tooltips for icon buttons
+✅ ALWAYS use confirmation modals for destructive actions
+✅ ALWAYS show success modals after operations complete
+✅ ALWAYS use different gradients for multiple metric cards
+✅ ALWAYS use placeholder divs for hidden action buttons
+✅ ALWAYS right-align action columns (justify-end)
+✅ ALWAYS maintain dark theme (#0D0E1C, #17182F)
+✅ ALWAYS follow color coding system
+✅ ALWAYS use Feather Icons (react-icons/fi)
+
+❌ NEVER use text buttons in tables
+❌ NEVER use light backgrounds
+❌ NEVER skip confirmation for destructive actions
+❌ NEVER use same gradient for all cards on a page
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📐 LAYOUT STRUCTURE (STANDARD PAGE)
+─────────────────────────────────────────────────────────────────────────────
+<div className="p-6 space-y-6">
+  {/* Header */}
+  <div className="flex items-center justify-between">
+    <div>
+      <h1 className="text-3xl font-bold text-white mb-2">Page Title</h1>
+      <p className="text-gray-400">Description</p>
+    </div>
+    <div className="flex items-center gap-3">
+      {/* Action buttons */}
+    </div>
+  </div>
+
+  {/* Filters (gradient-themed) */}
+  <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 
+                  rounded-xl p-4 border border-white/10">
+    {/* Filter controls */}
+  </div>
+
+  {/* Content */}
+  <Card>
+    <Table columns={columns} data={data} />
+  </Card>
+</div>
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📦 COMMON IMPORTS
+─────────────────────────────────────────────────────────────────────────────
+import React, { useState } from 'react';
+import { 
+  FiEye, FiEdit, FiTrash2, FiX, FiCheck, FiCheckCircle, 
+  FiXCircle, FiAlertTriangle, FiShield, FiToggleLeft, 
+  FiToggleRight, FiPlus 
+} from 'react-icons/fi';
+import { 
+  Card, Table, Modal, ConfirmModal, SuccessModal, MetricCard 
+} from '../components/common';
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 ACTION COLUMN STRUCTURE
+─────────────────────────────────────────────────────────────────────────────
+{
+  header: 'Actions',
+  accessor: 'actions',
+  render: (row) => (
+    <div className="flex items-center justify-end gap-2 min-w-[140px]">
+      {/* Icon buttons here */}
+      {condition ? (
+        <button>...</button>
+      ) : (
+        <div className="w-10" /> // Placeholder for alignment
+      )}
+    </div>
+  ),
+}
+
+Min-width calculation:
+• 1 button: min-w-[50px]
+• 2 buttons: min-w-[100px]
+• 3 buttons: min-w-[140px]
+• 4 buttons: min-w-[180px]
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 BACKGROUND COLORS (ONLY USE THESE)
+─────────────────────────────────────────────────────────────────────────────
+#0D0E1C → Primary dark background
+#17182F → Card/panel background
+#1F2142 → Hover state background
+
+bg-[#0D0E1C]
+bg-[#17182F]
+bg-white/5  → Subtle hover
+bg-white/10 → Borders
+
+═══════════════════════════════════════════════════════════════════════════════
+
+For complete details, examples, and best practices:
+👉 READ: /DESIGN_SYSTEM.md
+
+This reference guide provides quick access to the most commonly used patterns.
+The full DESIGN_SYSTEM.md contains comprehensive documentation with examples.
+
+═══════════════════════════════════════════════════════════════════════════════
+Last Updated: October 2025
+Version: 1.0.0

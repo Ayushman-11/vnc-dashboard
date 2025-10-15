@@ -1,3 +1,16 @@
+/**
+ * Common UI Components - VNC SOAR Dashboard
+ * 
+ * DESIGN SYSTEM REFERENCE:
+ * Before using or modifying these components, see /DESIGN_SYSTEM.md
+ * for complete guidelines on:
+ * - Component usage patterns
+ * - Color coding for actions
+ * - Icon button specifications
+ * - Modal implementations
+ * - Responsive design patterns
+ */
+
 // Export all common components
 export { default as Sidebar } from './Sidebar';
 export { default as MetricCard } from './MetricCard';

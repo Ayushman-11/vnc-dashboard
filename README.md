@@ -116,12 +116,20 @@ vnc-dashboard/
 ├── tailwind.config.js    # Tailwind configuration with animations
 ├── postcss.config.js     # PostCSS configuration
 ├── package.json
-└── README.md
+├── README.md             # Project overview and setup
+├── DESIGN_SYSTEM.md      # 📖 Complete design system documentation
+└── .design-system-reference.txt  # Quick reference for developers
 ```
 
 ## 🎨 Design System
 
-### Color Palette
+> **📖 For detailed design guidelines, component patterns, and AI/LLM instructions, see [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)**
+
+The VNC SOAR Dashboard follows a comprehensive design system to ensure visual consistency and professional UX across all pages and components.
+
+### Quick Reference
+
+#### Color Palette
 - **Background**: `#0D0E1C` (Primary dark background)
 - **Surface**: `#17182F` (Card/panel background)
 - **Primary Accent**: `#6351ED` (Purple - view/read actions)
@@ -164,6 +172,28 @@ All action buttons use icon-only design with hover tooltips:
   - Gray: Neutral actions (FiXCircle for dismiss)
 - **Hover Effects**: Background opacity increases, tooltip appears
 - **Tooltips**: Bottom-positioned, white text on dark background, z-index 10
+
+### For Developers & AI Assistants
+
+When adding new pages or modifying existing components:
+
+1. **Always refer to [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)** for complete guidelines
+2. **Use icon-only buttons** in table action columns (never text buttons)
+3. **Include hover tooltips** for all icon buttons
+4. **Apply different gradients** to metric cards on the same page
+5. **Use confirmation modals** for all destructive actions
+6. **Follow the color coding system** for action types
+7. **Maintain the dark theme** - never use light backgrounds
+
+See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for:
+- Complete component patterns with code examples
+- Color system and gradient usage
+- Modal implementation guidelines
+- Responsive design patterns
+- Anti-patterns to avoid
+- Full example of creating a new page
+
+---
 
 ## 📊 Features
 
