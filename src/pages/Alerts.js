@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FiFilter, FiDownload, FiCheckCircle, FiXCircle, FiEye, FiAlertTriangle } from 'react-icons/fi';
-import { Card, Button, SearchBar, Dropdown, Table, Badge, ConfirmModal, SuccessModal, Modal } from '../components/common';
+import { Card, Button, SearchBar, Dropdown, Table, Badge, ConfirmModal, SuccessModal, Modal, PermissionGate } from '../components/common';
 import { useAlertStore } from '../store';
 import { formatRelativeTime, formatDateTime } from '../utils';
 import { ALERT_SEVERITY, ALERT_STATUS } from '../constants';
+import { PERMISSIONS } from '../utils/permissions';
 
 const Alerts = () => {
   const { filteredAlerts, filters, setFilters, summary, updateAlert } = useAlertStore();
@@ -134,59 +135,74 @@ const Alerts = () => {
             </span>
           </button>
           
-          {/* Investigate - Only for Open status */}
+          {/* Investigate - Only for Open status - Analyst+ */}
           {row.status === ALERT_STATUS.OPEN ? (
-            <button 
-              className="w-10 h-10 flex items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 transition-all group relative"
-              onClick={() => {
-                setSelectedAlert(row);
-                setShowInvestigateModal(true);
-              }}
-              title="Investigate"
+            <PermissionGate 
+              permission={PERMISSIONS.INVESTIGATE_ALERTS}
+              fallback={<div className="w-10" />}
             >
-              <FiAlertTriangle className="text-lg" />
-              <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-                Investigate
-              </span>
-            </button>
+              <button 
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 transition-all group relative"
+                onClick={() => {
+                  setSelectedAlert(row);
+                  setShowInvestigateModal(true);
+                }}
+                title="Investigate"
+              >
+                <FiAlertTriangle className="text-lg" />
+                <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                  Investigate
+                </span>
+              </button>
+            </PermissionGate>
           ) : (
             <div className="w-10" /> 
           )}
           
-          {/* Resolve - For Open or In Progress */}
+          {/* Resolve - For Open or In Progress - Analyst+ */}
           {(row.status === ALERT_STATUS.OPEN || row.status === ALERT_STATUS.IN_PROGRESS) ? (
-            <button 
-              className="w-10 h-10 flex items-center justify-center rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all group relative"
-              onClick={() => {
-                setSelectedAlert(row);
-                setShowResolveModal(true);
-              }}
-              title="Resolve"
+            <PermissionGate 
+              permission={PERMISSIONS.RESOLVE_ALERTS}
+              fallback={<div className="w-10" />}
             >
-              <FiCheckCircle className="text-lg" />
-              <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-                Resolve
-              </span>
-            </button>
+              <button 
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all group relative"
+                onClick={() => {
+                  setSelectedAlert(row);
+                  setShowResolveModal(true);
+                }}
+                title="Resolve"
+              >
+                <FiCheckCircle className="text-lg" />
+                <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                  Resolve
+                </span>
+              </button>
+            </PermissionGate>
           ) : (
             <div className="w-10" />
           )}
           
-          {/* Dismiss - For Open or In Progress */}
+          {/* Dismiss - For Open or In Progress - Analyst+ */}
           {(row.status !== ALERT_STATUS.DISMISSED && row.status !== ALERT_STATUS.RESOLVED) ? (
-            <button 
-              className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-500/20 text-gray-400 hover:bg-gray-500/30 transition-all group relative"
-              onClick={() => {
-                setSelectedAlert(row);
-                setShowDismissModal(true);
-              }}
-              title="Dismiss"
+            <PermissionGate 
+              permission={PERMISSIONS.DISMISS_ALERTS}
+              fallback={<div className="w-10" />}
             >
-              <FiXCircle className="text-lg" />
-              <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-                Dismiss
-              </span>
-            </button>
+              <button 
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-500/20 text-gray-400 hover:bg-gray-500/30 transition-all group relative"
+                onClick={() => {
+                  setSelectedAlert(row);
+                  setShowDismissModal(true);
+                }}
+                title="Dismiss"
+              >
+                <FiXCircle className="text-lg" />
+                <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                  Dismiss
+                </span>
+              </button>
+            </PermissionGate>
           ) : (
             <div className="w-10" />
           )}

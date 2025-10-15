@@ -23,3 +23,5 @@ export { default as Table } from './Table';
 export { default as Modal } from './Modal';
 export { default as ConfirmModal } from './ConfirmModal';
 export { default as SuccessModal } from './SuccessModal';
+export { default as PermissionGate } from './PermissionGate';
+

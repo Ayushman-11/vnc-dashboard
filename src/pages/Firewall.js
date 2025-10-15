@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FiPlus, FiDownload, FiTrash2, FiToggleLeft, FiToggleRight } from 'react-icons/fi';
-import { Card, Button, SearchBar, Dropdown, Table, Badge, ConfirmModal, SuccessModal, Modal } from '../components/common';
+import { Card, Button, SearchBar, Dropdown, Table, Badge, ConfirmModal, SuccessModal, Modal, PermissionGate } from '../components/common';
 import { useFirewallStore } from '../store';
 import { formatDateTime } from '../utils';
 import { FIREWALL_STATUS } from '../constants';
+import { PERMISSIONS } from '../utils/permissions';
 
 const Firewall = () => {
   const { filteredRules, filters, setFilters, statistics, updateRule, deleteRule, addRule } = useFirewallStore();
@@ -118,40 +119,47 @@ const Firewall = () => {
       accessor: 'actions',
       render: (row) => (
         <div className="flex items-center justify-end gap-2 min-w-[100px]">
-          <button
-            className={`w-10 h-10 flex items-center justify-center rounded-lg ${
-              row.status === FIREWALL_STATUS.ACTIVE 
-                ? 'bg-orange-500/20 text-orange-400 hover:bg-orange-500/30' 
-                : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
-            } transition-all group relative`}
-            onClick={() => {
-              setSelectedRule(row);
-              setShowToggleModal(true);
-            }}
-            title={row.status === FIREWALL_STATUS.ACTIVE ? 'Disable' : 'Enable'}
-          >
-            {row.status === FIREWALL_STATUS.ACTIVE ? (
-              <FiToggleRight className="text-lg" />
-            ) : (
-              <FiToggleLeft className="text-lg" />
-            )}
-            <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-              {row.status === FIREWALL_STATUS.ACTIVE ? 'Disable Rule' : 'Enable Rule'}
-            </span>
-          </button>
-          <button 
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all group relative"
-            onClick={() => {
-              setSelectedRule(row);
-              setShowDeleteModal(true);
-            }}
-            title="Delete"
-          >
-            <FiTrash2 className="text-lg" />
-            <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-              Delete Rule
-            </span>
-          </button>
+          {/* Toggle Rule - Admin+ */}
+          <PermissionGate permission={PERMISSIONS.TOGGLE_FIREWALL_RULES}>
+            <button
+              className={`w-10 h-10 flex items-center justify-center rounded-lg ${
+                row.status === FIREWALL_STATUS.ACTIVE 
+                  ? 'bg-orange-500/20 text-orange-400 hover:bg-orange-500/30' 
+                  : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+              } transition-all group relative`}
+              onClick={() => {
+                setSelectedRule(row);
+                setShowToggleModal(true);
+              }}
+              title={row.status === FIREWALL_STATUS.ACTIVE ? 'Disable' : 'Enable'}
+            >
+              {row.status === FIREWALL_STATUS.ACTIVE ? (
+                <FiToggleRight className="text-lg" />
+              ) : (
+                <FiToggleLeft className="text-lg" />
+              )}
+              <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                {row.status === FIREWALL_STATUS.ACTIVE ? 'Disable Rule' : 'Enable Rule'}
+              </span>
+            </button>
+          </PermissionGate>
+          
+          {/* Delete Rule - Admin+ */}
+          <PermissionGate permission={PERMISSIONS.DELETE_FIREWALL_RULES}>
+            <button 
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all group relative"
+              onClick={() => {
+                setSelectedRule(row);
+                setShowDeleteModal(true);
+              }}
+              title="Delete"
+            >
+              <FiTrash2 className="text-lg" />
+              <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                Delete Rule
+              </span>
+            </button>
+          </PermissionGate>
         </div>
       ),
     },
@@ -169,13 +177,15 @@ const Firewall = () => {
           <Button variant="secondary" icon={FiDownload}>
             Export
           </Button>
-          <Button 
-            variant="primary" 
-            icon={FiPlus}
-            onClick={() => setShowAddModal(true)}
-          >
-            Add Rule
-          </Button>
+          <PermissionGate permission={PERMISSIONS.ADD_FIREWALL_RULES}>
+            <Button 
+              variant="primary" 
+              icon={FiPlus}
+              onClick={() => setShowAddModal(true)}
+            >
+              Add Rule
+            </Button>
+          </PermissionGate>
         </div>
       </div>
       

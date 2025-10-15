@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FiFilter, FiDownload, FiMoreVertical, FiEye, FiX, FiShield } from 'react-icons/fi';
-import { Card, Button, SearchBar, Dropdown, Table, Badge, ConfirmModal, SuccessModal, Modal } from '../components/common';
+import { Card, Button, SearchBar, Dropdown, Table, Badge, ConfirmModal, SuccessModal, Modal, PermissionGate } from '../components/common';
 import { useSessionStore } from '../store';
 import { formatDateTime, formatBytes, getRiskScoreColor } from '../utils';
 import { SESSION_STATUS } from '../constants';
+import { PERMISSIONS } from '../utils/permissions';
 
 const Sessions = () => {
   const { filteredSessions, filters, setFilters, statistics, terminateSession } = useSessionStore();
@@ -110,6 +111,7 @@ const Sessions = () => {
       accessor: 'actions',
       render: (row) => (
         <div className="flex items-center justify-end gap-2 min-w-[140px]">
+          {/* View Details - Available to all roles */}
           <button 
             className="w-10 h-10 flex items-center justify-center rounded-lg bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-all group relative"
             onClick={() => handleViewDetails(row)}
@@ -120,30 +122,38 @@ const Sessions = () => {
               View Details
             </span>
           </button>
-          <button 
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 transition-all group relative"
-            onClick={() => handleBlockIP(row)}
-            title="Block IP"
-          >
-            <FiShield className="text-lg" />
-            <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-              Block IP
-            </span>
-          </button>
-          {row.status !== 'Terminated' && (
+          
+          {/* Block IP - Admin+ only */}
+          <PermissionGate permission={PERMISSIONS.BLOCK_IPS}>
             <button 
-              className="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all group relative"
-              onClick={() => {
-                setSelectedSession(row);
-                setShowTerminateModal(true);
-              }}
-              title="Terminate Session"
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 transition-all group relative"
+              onClick={() => handleBlockIP(row)}
+              title="Block IP"
             >
-              <FiX className="text-lg" />
+              <FiShield className="text-lg" />
               <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-                Terminate
+                Block IP
               </span>
             </button>
+          </PermissionGate>
+          
+          {/* Terminate Session - Admin+ only */}
+          {row.status !== 'Terminated' && (
+            <PermissionGate permission={PERMISSIONS.TERMINATE_SESSIONS}>
+              <button 
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all group relative"
+                onClick={() => {
+                  setSelectedSession(row);
+                  setShowTerminateModal(true);
+                }}
+                title="Terminate Session"
+              >
+                <FiX className="text-lg" />
+                <span className="absolute bottom-full mb-2 hidden group-hover:block bg-[#1a1b35] text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                  Terminate
+                </span>
+              </button>
+            </PermissionGate>
           )}
         </div>
       ),

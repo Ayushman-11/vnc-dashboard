@@ -7,18 +7,58 @@ import {
   FiAlertTriangle,
   FiLock,
   FiSettings,
-  FiChevronDown,
+  FiUsers,
 } from 'react-icons/fi';
+import { useAuth } from '../../hooks/useAuth';
+import { usePermissions } from '../../hooks/usePermissions';
+import { UserButton, RoleBadge } from '../auth';
+import { PERMISSIONS } from '../../utils/permissions';
 
-const Sidebar = ({ user = { name: 'Niko Sario', role: 'Lead Product Design' } }) => {
+const Sidebar = () => {
+  const { name, role } = useAuth();
+  const { can } = usePermissions();
   
   const menuItems = [
-    { path: '/dashboard', icon: FiGrid, label: 'Dashboard' },
-    { path: '/sessions', icon: FiActivity, label: 'VNC Sessions' },
-    { path: '/alerts', icon: FiAlertTriangle, label: 'Alerts' },
-    { path: '/firewall', icon: FiLock, label: 'Firewall Rules' },
-    { path: '/settings', icon: FiSettings, label: 'Settings' },
+    { 
+      path: '/dashboard', 
+      icon: FiGrid, 
+      label: 'Dashboard',
+      show: can(PERMISSIONS.VIEW_DASHBOARD)
+    },
+    { 
+      path: '/sessions', 
+      icon: FiActivity, 
+      label: 'VNC Sessions',
+      show: can(PERMISSIONS.VIEW_SESSIONS)
+    },
+    { 
+      path: '/alerts', 
+      icon: FiAlertTriangle, 
+      label: 'Alerts',
+      show: can(PERMISSIONS.VIEW_ALERTS)
+    },
+    { 
+      path: '/firewall', 
+      icon: FiLock, 
+      label: 'Firewall Rules',
+      show: can(PERMISSIONS.VIEW_FIREWALL)
+    },
+    { 
+      path: '/settings', 
+      icon: FiSettings, 
+      label: 'Settings',
+      show: can(PERMISSIONS.VIEW_SETTINGS)
+    },
+    { 
+      path: '/users', 
+      icon: FiUsers, 
+      label: 'User Management',
+      show: can(PERMISSIONS.MANAGE_USERS)
+    },
   ];
+  
+  // Filter menu items based on permissions
+  const visibleMenuItems = menuItems.filter(item => item.show);
   
   return (
     <div className="w-64 bg-[#17182F] border-r border-[#2a2c44] flex flex-col h-screen">
@@ -33,20 +73,21 @@ const Sidebar = ({ user = { name: 'Niko Sario', role: 'Lead Product Design' } })
       </div>
       
       {/* User Profile */}
-      <div className="mx-4 mb-6 bg-[#2a2c44] rounded-lg p-3 flex items-center cursor-pointer hover:bg-[#33354d] transition-colors">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
-          {user.name.charAt(0)}
+      <div className="mx-4 mb-6 bg-[#2a2c44] rounded-lg p-3">
+        <div className="flex items-center gap-3 mb-3">
+          <UserButton />
+          <div className="flex-1 min-w-0">
+            <div className="text-white font-semibold text-sm truncate">{name}</div>
+            <div className="mt-1">
+              <RoleBadge role={role} size="sm" />
+            </div>
+          </div>
         </div>
-        <div className="ml-3 flex-1">
-          <div className="text-white font-semibold text-sm">{user.name}</div>
-          <div className="text-gray-400 text-xs">{user.role}</div>
-        </div>
-        <FiChevronDown className="text-gray-400" />
       </div>
       
       {/* Navigation Menu */}
       <nav className="flex-1 px-4">
-        {menuItems.map((item) => (
+        {visibleMenuItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
