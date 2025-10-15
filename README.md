@@ -1,27 +1,30 @@
 # VNC Data Exfiltration SOAR Platform
 
-A full-stack, real-time Security Orchestration, Automation, and Response (SOAR) platform for VNC Data Exfiltration detection. Built with enterprise-grade microservices architecture for real-world data ingestion, user behavior analysis (UBA), and dynamic security responses.
+A modern, real-time Security Orchestration, Automation, and Response (SOAR) platform for VNC Data Exfiltration detection. Features a polished dark-themed UI with comprehensive monitoring, automated response capabilities, and intuitive security workflows.
 
 ## 🎯 Project Overview
 
-This platform provides comprehensive monitoring and automated response capabilities for VNC server security, including:
+This platform provides enterprise-grade monitoring and automated response capabilities for VNC server security, including:
 
-- **Real-time Monitoring**: Live VNC session tracking with data exfiltration detection
-- **User Behavior Analytics**: ML-powered anomaly detection and risk scoring
-- **Automated Response**: Dynamic firewall rule creation and session termination
-- **Alert Management**: Multi-severity alert system with status tracking
-- **Interactive Dashboard**: Dark-themed UI with real-time metrics and visualization
+- **Real-time Monitoring**: Live VNC session tracking with risk assessment and data transfer monitoring
+- **User Behavior Analytics**: Anomaly detection with risk scoring and threat classification
+- **Automated Response**: Dynamic firewall rule management and instant session termination
+- **Alert Management**: Multi-severity alert system with complete lifecycle tracking
+- **Interactive Dashboard**: Modern dark-themed UI with gradient accents and real-time metrics
+- **Professional UX**: Icon-based actions with tooltips, responsive design, and smooth transitions
 
 ## 🏗️ Architecture
 
 ### Frontend (React)
 - **Framework**: React 19.2.0 with functional components and hooks
-- **Routing**: React Router DOM for multi-page navigation
-- **State Management**: Zustand for global state (alerts, sessions, firewall, metrics)
-- **Styling**: Tailwind CSS with custom dark theme
-- **Real-time Communication**: Socket.IO client for WebSocket connections
-- **Data Visualization**: Recharts for charts and graphs
-- **API Client**: Axios with interceptors
+- **Routing**: React Router DOM for seamless multi-page navigation
+- **State Management**: Zustand for efficient global state management
+- **Styling**: Tailwind CSS v3.4.0 with custom dark theme and gradient system
+- **UI Components**: Custom modal system (base, confirm, success) with animations
+- **Icons**: Feather Icons (react-icons/fi) for consistent iconography
+- **Design Pattern**: Card-based layouts with glass-morphism effects
+- **Interactions**: Icon-only action buttons with hover tooltips
+- **Animations**: Smooth transitions, fade-ins, and hover effects
 
 ### Backend (Planned Microservices)
 - **Data Ingestion Service**: Log file monitoring and parsing
@@ -75,19 +78,43 @@ npm run build
 ```
 vnc-dashboard/
 ├── public/                 # Static assets
+│   ├── index.html
+│   ├── manifest.json
+│   └── robots.txt
 ├── src/
 │   ├── components/        # React components
 │   │   ├── common/       # Reusable UI components
+│   │   │   ├── Button.js
+│   │   │   ├── Card.js
+│   │   │   ├── MetricCard.js    # Gradient-themed metric cards
+│   │   │   ├── Table.js
+│   │   │   ├── Modal.js          # Base modal component
+│   │   │   ├── ConfirmModal.js   # Confirmation dialogs
+│   │   │   ├── SuccessModal.js   # Success notifications
+│   │   │   └── index.js
 │   │   └── dashboard/    # Dashboard-specific components
+│   │       ├── RecentAlerts.js   # Recent alerts widget
+│   │       └── SessionsTable.js   # Active sessions widget
 │   ├── layouts/          # Page layouts
+│   │   └── MainLayout.js        # Sidebar + main content
 │   ├── pages/            # Main application pages
-│   ├── hooks/            # Custom React hooks
-│   ├── services/         # API and WebSocket services
+│   │   ├── Dashboard.js         # Main dashboard with metrics
+│   │   ├── Sessions.js          # VNC sessions management
+│   │   ├── Alerts.js            # Alert management with lifecycle
+│   │   └── Firewall.js          # Firewall rules management
 │   ├── store/            # Zustand state management
-│   ├── utils/            # Utility functions
+│   │   ├── alertStore.js        # Alert state and actions
+│   │   ├── sessionStore.js      # Session state and actions
+│   │   ├── firewallStore.js     # Firewall state and actions
+│   │   └── metricStore.js       # Dashboard metrics
 │   ├── constants/        # Configuration and constants
+│   │   └── index.js             # Alert status, severity, etc.
+│   ├── App.css           # Global styles
 │   ├── App.js            # Root component with routing
+│   ├── index.css         # Tailwind directives
 │   └── index.js          # Application entry point
+├── tailwind.config.js    # Tailwind configuration with animations
+├── postcss.config.js     # PostCSS configuration
 ├── package.json
 └── README.md
 ```
@@ -95,50 +122,149 @@ vnc-dashboard/
 ## 🎨 Design System
 
 ### Color Palette
-- **Background**: `#0D0E1C` (Primary dark)
+- **Background**: `#0D0E1C` (Primary dark background)
 - **Surface**: `#17182F` (Card/panel background)
-- **Primary Accent**: `#6351ED` (Purple)
-- **Secondary Accent**: `#8884d8` (Blue)
-- **Success**: `#10b981` (Green)
-- **Warning**: `#f59e0b` (Orange)
-- **Danger**: `#ef4444` (Red)
+- **Primary Accent**: `#6351ED` (Purple - view/read actions)
+- **Secondary Accent**: `#8884d8` (Blue gradient accent)
+- **Success**: `#10b981` (Green - positive actions, resolve)
+- **Warning**: `#f59e0b` (Orange - caution, investigate)
+- **Danger**: `#ef4444` (Red - destructive actions, terminate)
+- **Teal**: `#14b8a6` (Teal gradient accent)
+- **Pink**: `#ec4899` (Pink gradient accent)
+
+### Gradient System
+Multi-color gradient themes applied across metric cards and filters:
+- **Purple**: `from-purple-500/20 to-purple-600/20`
+- **Blue**: `from-blue-500/20 to-blue-600/20`
+- **Teal**: `from-teal-500/20 to-teal-600/20`
+- **Pink**: `from-pink-500/20 to-pink-600/20`
+- **Orange**: `from-orange-500/20 to-orange-600/20`
 
 ### UI Components
-- Dark theme with gradient effects
-- Card-based layout with glass-morphism
-- Responsive sidebar navigation
-- Interactive charts and tables
-- Status badges and metric cards
+- **Modals**: Backdrop blur with fade-in animations, size variants (sm/md/lg/xl)
+  - Base Modal: Generic container with gradient background
+  - Confirm Modal: Warning/Danger/Info/Success types with icons
+  - Success Modal: Auto-close notifications with checkmark
+- **Cards**: Glass-morphism effect with gradient borders and backgrounds
+- **Buttons**: Icon-only (40×40px) with colored backgrounds and hover tooltips
+- **Tooltips**: Absolute positioned, appear on hover with dark background
+- **Tables**: Responsive with fixed-width action columns
+- **Filters**: Gradient-themed sections with clear labels
+- **Status Badges**: Color-coded with rounded borders
+
+### Icon Action Buttons
+All action buttons use icon-only design with hover tooltips:
+- **Fixed Size**: 40px × 40px for consistent layout
+- **Icon Size**: 18px (text-lg) for clarity
+- **Color Coding**:
+  - Purple: View/Read operations (FiEye)
+  - Orange: Warning/Investigation (FiAlertTriangle, FiShield)
+  - Red: Destructive actions (FiTrash2, FiX)
+  - Green: Positive actions (FiCheckCircle, FiToggleLeft when active)
+  - Gray: Neutral actions (FiXCircle for dismiss)
+- **Hover Effects**: Background opacity increases, tooltip appears
+- **Tooltips**: Bottom-positioned, white text on dark background, z-index 10
 
 ## 📊 Features
 
 ### Dashboard
-- Real-time metrics overview (active sessions, alerts, firewall rules)
-- Alert severity and status distribution charts
-- Traffic volume trend analysis
-- Recent alerts timeline
-- Active VNC sessions summary
+- **Real-time Metrics**: Live overview cards with gradient themes
+  - Active Sessions count
+  - Active Alerts count  
+  - Active Firewall Rules count
+  - System Status indicator
+- **Visual Analytics**: 
+  - Alert severity distribution (pie chart)
+  - Alert status breakdown (pie chart)
+  - Traffic volume trends (area chart)
+- **Recent Activity**: Latest alerts with quick access to detailed view
+- **Active Sessions**: Summary table with risk assessment
+- **Multi-gradient Cards**: Each metric card uses different gradient (purple/blue/teal/pink/orange)
 
-### Sessions Management
-- Live VNC session monitoring
-- Session details (source IP, destination, duration, data transferred)
-- Risk level assessment
-- Session termination controls
-- Search and filter capabilities
+### Sessions Management (/sessions)
+- **Live Monitoring**: Real-time VNC session tracking with detailed information
+- **Session Details**: 
+  - Session ID, User, Source IP, Destination IP
+  - Connection time, Duration, Data transferred
+  - Risk level assessment (Critical/High/Medium/Low)
+  - Current status (Active/Terminated)
+- **Icon-based Actions** (with tooltips):
+  - View Details (FiEye - purple)
+  - Block IP (FiShield - orange)
+  - Terminate Session (FiX - red)
+- **Confirmation Modals**: 
+  - Block IP confirmation with warning type
+  - Terminate session with danger confirmation
+  - Success notifications with auto-close
+- **Advanced Filters**: 
+  - Status filter (All/Active/Terminated)
+  - Risk level filter (All/Critical/High/Medium/Low)
+  - Search by IP, user, or session ID
+  - Gradient-themed filter section
 
-### Alerts System
-- Multi-severity alert management (Critical, High, Medium, Low, Info)
-- Alert status tracking (Open, Investigating, Resolved, Closed)
-- Bulk actions (acknowledge, resolve, delete)
-- Time-based filtering
-- Alert details and investigation tools
+### Alerts System (/alerts)
+- **Multi-severity Management**: Critical, High, Medium, Low, Info alerts
+- **Complete Lifecycle Tracking**: 
+  - Open → Investigating → Resolved
+  - Open → Dismissed
+- **Alert Details**:
+  - Alert ID, Type, Severity, Status
+  - Source IP, User, Timestamp
+  - Affected session information
+  - Description and detection details
+- **Icon-based Actions** (with tooltips):
+  - View Details (FiEye - purple) - always visible
+  - Investigate (FiAlertTriangle - orange) - for Open alerts
+  - Resolve (FiCheckCircle - green) - for Open/In Progress
+  - Dismiss (FiXCircle - gray) - for Open/In Progress
+- **Smart Action Visibility**: Buttons appear/hide based on alert status
+- **Confirmation Modals**:
+  - Investigate confirmation with info type
+  - Resolve confirmation with success type
+  - Dismiss confirmation with warning type
+- **Advanced Filters**:
+  - Severity filter (All/Critical/High/Medium/Low/Info)
+  - Status filter (All/Open/Investigating/Resolved/Dismissed)
+  - Time range selection
+  - Search functionality
+  - Gradient-themed filter section
 
-### Firewall Management
-- Dynamic firewall rule creation
-- Rule status management (Active, Inactive, Pending)
-- Action types (Block, Allow, Rate Limit, Monitor)
-- Rule modification and deletion
-- Rule effectiveness tracking
+### Firewall Management (/firewall)
+- **Dynamic Rule Management**: Create, modify, and delete firewall rules
+- **Rule Details**:
+  - Rule ID, Source IP, Destination IP
+  - Action type (Block/Allow/Rate Limit/Monitor)
+  - Protocol, Port, Priority
+  - Status (Active/Inactive/Pending)
+  - Created timestamp
+- **Icon-based Actions** (with tooltips):
+  - Toggle Status (FiToggleRight/FiToggleLeft - orange when disabling, green when enabling)
+  - Delete Rule (FiTrash2 - red)
+- **Add Rule Modal**: Comprehensive form for creating new rules
+  - Source IP, Destination IP inputs
+  - Action type selection
+  - Protocol (TCP/UDP/ICMP/ALL)
+  - Port range specification
+  - Priority level
+  - Optional description
+- **Confirmation Modals**:
+  - Toggle rule status (warning type)
+  - Delete rule (danger type)
+  - Success notifications for all operations
+- **Advanced Filters**:
+  - Status filter (All/Active/Inactive/Pending)
+  - Action filter (All/Block/Allow/Rate Limit/Monitor)
+  - Search by IP or rule ID
+  - Gradient-themed filter section
+
+### Common Features Across All Pages
+- **Consistent Button Alignment**: Fixed-width action columns prevent layout shifts
+- **Placeholder Spacing**: Hidden buttons maintain layout consistency
+- **Hover Tooltips**: Clear action descriptions without cluttering interface
+- **Color-coded Actions**: Visual hierarchy based on action severity
+- **Responsive Design**: Adapts to different screen sizes
+- **Smooth Animations**: Fade-ins, transitions, and hover effects
+- **Professional UX**: Clean, modern interface matching Orca design system
 
 ## 🔌 API Integration
 
@@ -187,66 +313,179 @@ export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3
 export const WS_URL = process.env.REACT_APP_WS_URL || 'http://localhost:3001';
 ```
 
-## 🧪 Development Features
+## 🎯 Implementation Status
 
-### Mock Data
-Development mode includes mock data generators for:
-- Sample alerts with varying severities
-- Simulated VNC sessions
-- Firewall rules
-- System metrics
+### ✅ Completed Features
 
-Mock data automatically loads when backend services are unavailable.
+#### UI/UX Components
+- ✅ Dark theme with custom color palette
+- ✅ Responsive sidebar navigation
+- ✅ Multi-gradient metric cards (5 color variants)
+- ✅ Modal system (Base, Confirm, Success)
+- ✅ Icon-only action buttons with hover tooltips
+- ✅ Professional table layouts with fixed-width action columns
+- ✅ Gradient-themed filter sections
+- ✅ Smooth animations and transitions
+- ✅ Glass-morphism card effects
 
-### Custom Hooks
-- `useWebSocket`: Manages WebSocket connections and event handling
-- `useDataFetcher`: Handles initial data loading with error handling
+#### State Management
+- ✅ Zustand stores for alerts, sessions, firewall, metrics
+- ✅ Alert lifecycle management (Open → Investigating → Resolved/Dismissed)
+- ✅ Session termination workflow
+- ✅ Firewall rule CRUD operations
+- ✅ Real-time metric updates
 
-## 🐛 Known Issues
+#### Pages & Features
+- ✅ Dashboard with live metrics and recent activity
+- ✅ Sessions page with view/block/terminate actions
+- ✅ Alerts page with complete lifecycle workflow
+- ✅ Firewall page with add/toggle/delete operations
+- ✅ Navigation between pages with React Router
+- ✅ Confirmation modals for all destructive actions
+- ✅ Success notifications with auto-close
+- ✅ Advanced filtering on all pages
 
-### Tailwind CSS Compilation
-**Issue**: PostCSS plugin compatibility between Tailwind CSS v4 and react-scripts 5.0.1
+#### Code Quality
+- ✅ Consistent button alignment across all tables
+- ✅ Conditional action visibility based on status
+- ✅ Color-coded actions for visual hierarchy
+- ✅ Proper tooltip implementation
+- ✅ Responsive design patterns
 
-**Error**: 
+### 🚧 Pending Implementation
+
+#### Backend Services (Planned)
+- ⏳ Data Ingestion Service - Log file monitoring
+- ⏳ UBA Service - Anomaly detection engine
+- ⏳ Orchestration & Response Service - Automated actions
+- ⏳ Session & Alert Service - REST API endpoints
+- ⏳ WebSocket Service - Real-time updates
+- ⏳ Database integration (PostgreSQL/MongoDB)
+- ⏳ Message broker (Kafka/RabbitMQ)
+
+#### Integration Features
+- ⏳ Real-time WebSocket connections
+- ⏳ API client with authentication
+- ⏳ Live data streaming from backend
+- ⏳ Persistent data storage
+- ⏳ User authentication and authorization
+- ⏳ Rate limiting and security middleware
+
+#### Advanced Features
+- ⏳ Data visualization with Recharts
+- ⏳ Export functionality (CSV, PDF)
+- ⏳ Bulk operations for alerts and rules
+- ⏳ Advanced search with filters
+- ⏳ Notification system
+- ⏳ Activity logs and audit trails
+- ⏳ Dashboard customization
+- ⏳ User preferences and settings
+
+### 🎨 Design Achievements
+- Professional dark theme matching Orca design system
+- Multi-color gradient system for visual distinction
+- Icon-only buttons eliminating text wrapping issues
+- Hover tooltips providing context without clutter
+- Consistent spacing and alignment across all pages
+- Smooth animations enhancing user experience
+- Color-coded actions for intuitive interaction
+- Glass-morphism effects for modern aesthetic
+
+---
+
+## 🚀 Quick Start
+
+### Current Development Status
+The frontend UI is **fully functional** with mock data and complete user interactions. All pages, modals, and workflows are operational and ready for backend integration.
+
+### Start Development Server
+```bash
+npm start
 ```
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin
+
+Visit http://localhost:3000 to see:
+- Interactive dashboard with metrics
+- Functional session management with termination
+- Complete alert lifecycle (Investigate → Resolve → Dismiss)
+- Firewall rule management with add/delete operations
+- Professional icon-based UI with tooltips
+
+---
+
+## 🐛 Known Issues & Solutions
+
+### Tailwind CSS Configuration
+**Status**: ✅ **RESOLVED**
+
+**Previous Issue**: PostCSS plugin compatibility between Tailwind CSS v4 and react-scripts 5.0.1
+
+**Solution Implemented**: Downgraded to Tailwind CSS v3.4.0
+```bash
+npm install -D tailwindcss@^3.4.0 postcss@^8.4.0 autoprefixer@^10.4.0
 ```
 
-**Temporary Solutions**:
-1. **Option A**: Downgrade to Tailwind CSS v3:
-   ```bash
-   npm install -D tailwindcss@^3.4.0
-   ```
-   Update `postcss.config.js`:
-   ```javascript
-   module.exports = {
-     plugins: {
-       tailwindcss: {},
-       autoprefixer: {},
-     },
-   }
-   ```
+**Current Configuration** (`postcss.config.js`):
+```javascript
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+```
 
-2. **Option B**: Migrate to Vite (requires project restructure)
+**Current Configuration** (`tailwind.config.js`):
+```javascript
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      animation: {
+        'fade-in': 'fadeIn 0.2s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+```
+
+### Development Server
+**Status**: Ready to run
+
+**Command**:
+```bash
+npm start
+```
+
+**Expected**: Application should start at http://localhost:3000 with no compilation errors
 
 ## 📦 Dependencies
 
-### Core
-- `react` (19.2.0) - UI framework
-- `react-router-dom` - Routing
-- `zustand` - State management
-- `axios` - HTTP client
-- `socket.io-client` - WebSocket client
+### Core Dependencies
+- `react` (19.2.0) - UI framework with latest features
+- `react-dom` (19.2.0) - React DOM rendering
+- `react-router-dom` (^7.1.3) - Client-side routing
+- `zustand` (^5.0.3) - Lightweight state management
+- `react-icons` (^5.4.0) - Feather Icons and more
 
-### UI & Styling
-- `tailwindcss` - CSS framework
-- `recharts` - Data visualization
-- `react-icons` - Icon library
-- `date-fns` - Date utilities
+### Development Dependencies
+- `tailwindcss` (^3.4.0) - Utility-first CSS framework
+- `postcss` (^8.4.0) - CSS transformation tool
+- `autoprefixer` (^10.4.0) - CSS vendor prefixes
+- `@tailwindcss/postcss` - PostCSS integration
+- `react-scripts` (5.0.1) - Create React App build scripts
 
-### Development
-- `@tailwindcss/postcss` - PostCSS plugin
-- `autoprefixer` - CSS vendor prefixes
+### Optional (for future integration)
+- `axios` - HTTP client for API calls
+- `socket.io-client` - WebSocket real-time updates
+- `recharts` - Data visualization charts
+- `date-fns` - Date manipulation utilities
 
 ## 🚢 Deployment
 
